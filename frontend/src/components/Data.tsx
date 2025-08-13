@@ -1,33 +1,34 @@
+'use client';
 
-type User = {
-    id: number;
-    title: string;
-    // Add other fields as needed
-};
 
-export default async function Data() {
 
-    const data = await fetch("http://127.0.0.1:8000/api/users", {
-        method: "GET"
+export default function Data() {
+    const DataFetch = async () => {
+        const response = await fetch('http://127.0.0.1:8000/api/users');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    };
+    DataFetch();
 
-    });
-    if (!data.ok) {
-        throw new Error("Failed to fetch data");
-    }
+  return (
 
-    const result: User[] = await data.json();
+    <>
+    <h1>
+        {
+            DataFetch().then(data => {
+                return data.map((user: { id: number; title: string }) => (
+                    <div key={user.id}>{user.title}</div>
+                ));
+            })
+        }
 
-    return (
-        <>
-        <h1 className="text-2xl font-bold text-center">Hello</h1>
-            <br />
-            {result.map((item: User) => (
-                <h1 key={item.id} className="text-2xl font-bold text-center">
-                    {item.title}
-                </h1>
-            ))}
+    </h1>
+    </>
 
-        </>
 
-    );
+
+  )
 }
