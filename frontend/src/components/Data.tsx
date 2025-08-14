@@ -1,8 +1,14 @@
 'use client';
 
-
-
 export default function Data() {
+
+    if (process.env.SKIP_DATA_FETCH === 'true') {
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
     const DataFetch = async () => {
         const response = await fetch('http://127.0.0.1:8000/api/users');
         if (!response.ok) {
@@ -14,7 +20,6 @@ export default function Data() {
     DataFetch();
 
   return (
-
     <>
     <h1>
         {
@@ -24,11 +29,7 @@ export default function Data() {
                 ));
             })
         }
-
     </h1>
     </>
 
-
-
-  )
-}
+)}
